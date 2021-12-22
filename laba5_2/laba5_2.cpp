@@ -153,12 +153,10 @@ void processChoice(BinaryTree& myBinaryTree, SewnBinaryTree& mySewnTree, int& ch
                 myBinaryTree.del(delElem, myBinaryTree.root);
             }
             else {
-                if(mySewnTree.isSewn)
-                    if (mySewnTree.find(delElem, mySewnTree.root))
-                    {
-                        mySewnTree.remove(mySewnTree.root, delElem);
+                if (mySewnTree.isSewn) {
+                    if(mySewnTree.remove(mySewnTree.root, delElem))
                         cout << "\nЭлемент был успешно удалён";
-                    }
+                }
                 else
                     mySewnTree.del(delElem, mySewnTree.root);
             }
