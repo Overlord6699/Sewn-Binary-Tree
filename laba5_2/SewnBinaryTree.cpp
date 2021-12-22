@@ -172,7 +172,7 @@ SewnBinaryTree::SewnBinaryTree(BinaryTree& tree)
 void SewnBinaryTree::initHead()
 {
     head = new node();
-    head->element = 111;
+    head->element = root->element;
     head->left = root;
     head->right = head;
 }
@@ -301,11 +301,9 @@ nodeptr SewnBinaryTree::remove(nodeptr ptr, const int value)
 
     if (found)
     {
-        if (current->leftTag && current->rightTag)
+        if ((current->leftTag && current->left) && (current->rightTag && current->right))
             ptr = delNodeWith2Childs(ptr, current);
-        else if (current->leftTag)
-            ptr = delNodeWith1Childs(ptr, parent, current);
-        else if (current->rightTag)
+        else if ((current->leftTag && current->left) || (current->rightTag && current->right))
             ptr = delNodeWith1Childs(ptr, parent, current);
         else
             ptr = delNodeWith0Childs(ptr, parent, current);
@@ -363,7 +361,7 @@ nodeptr& SewnBinaryTree::insertInSewnTree(nodeptr& ptr, const int value)
             }
         }
     }
-    // return updated Node, where children are inserted
+    
     return ptr;
 }
 
@@ -392,9 +390,9 @@ nodeptr SewnBinaryTree::delNodeWith1Childs(nodeptr ptr, nodeptr parent, nodeptr 
     nodeptr child;
 
     if (current->leftTag)
-        child = current->left; 
+        child = current->left;
     else
-        child = current->right;  
+        child = current->right;
 
     if (parent == NULL)
         ptr = child;
@@ -418,16 +416,16 @@ nodeptr SewnBinaryTree::delNodeWith2Childs(nodeptr ptr, nodeptr current)
     nodeptr nextParent = current;
     nodeptr next = current->right;
 
-    while (next->leftTag) {
-        nextParent = next; 
+    while (next->leftTag && next->left) {
+        nextParent = next; 
         next = next->left; 
     }
 
     current->element = next->element;
 
-    if (!next->rightTag)
+    if (!next->rightTag || !next->right)
         ptr = delNodeWith0Childs(ptr, nextParent, next);
-    else     
+    else if(next->right)
         ptr = delNodeWith1Childs(ptr, nextParent, next);
 
     return ptr;
@@ -454,9 +452,10 @@ nodeptr SewnBinaryTree::findNext(nodeptr current)
     if (!current->rightTag)
         return current->right;
 
-    current = current->right;
+    if(current->right)
+        current = current->right;
 
-    while (current->leftTag)
+    while (current->leftTag && current->left)
         current = current->left;
 
     return current;
@@ -467,9 +466,10 @@ nodeptr SewnBinaryTree::findPrev(nodeptr current)
     if (!current->leftTag)
         return current->left;
 
-    current = current->left;
+    if(current->left)
+        current = current->left;
 
-    while (current->rightTag)
+    while (current->rightTag && current->right)
         current = current->right;
 
     return current;

@@ -41,7 +41,7 @@ public:
     int get_tree_height(nodeptr root) const;
 
     void insert(int value, nodeptr& ptr);
-    void del(int, nodeptr&);
+    void del(int value, nodeptr& ptr);
  
 
     nodeptr& find(int x, nodeptr& ptr);
@@ -50,9 +50,11 @@ public:
 
     
     queue<nodeptr> breadth_first_search();
-    void preorder(nodeptr);
-    void inorder(nodeptr);
-    void postorder(nodeptr);
+
+    //добавлен bool для отображения нулей(для моей лабы)
+    void preorder(nodeptr, const bool showZeros);
+    void inorder(nodeptr, const bool showZeros);
+    void postorder(nodeptr, const bool showZeros);
 
 
     nodeptr srl(nodeptr&);

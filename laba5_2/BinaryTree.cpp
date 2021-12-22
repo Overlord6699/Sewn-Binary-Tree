@@ -94,17 +94,7 @@ void BinaryTree::visualize()
         for (auto node = 0; node < nodes_count; node++)
         {
             auto node_value = values_[level][node].empty() ? empty_node_ : values_[level][node];
-            //вывод значени€ вершины
-            
-            /*
-            //моЄ
-            
-            nodeptr findPtr = (stoi(node_value), root);
-
-
-            if (!findPtr->rightTag && findPtr->right)
-                node_value = "-(" + to_string(findPtr->right->element) + ")" + node_value;
-             */
+            //вывод значени€ вершины                   
 
             cout << setw(node_length_) << setfill('0') << node_value;
             //отступ
@@ -301,8 +291,13 @@ nodeptr& BinaryTree::find(int x, nodeptr& ptr)
     {
         if (x < ptr->element) // идЄм влево
         {
-            if(ptr->leftTag)
+            if (ptr->leftTag)
                 find(x, ptr->left);
+            else
+            {
+                ptr = NULL;
+                return ptr;
+            }
         }
         else
         {
@@ -310,6 +305,11 @@ nodeptr& BinaryTree::find(int x, nodeptr& ptr)
             {
                 if (ptr->rightTag)
                     find(x, ptr->right);
+                else
+                {
+                    ptr = NULL;
+                    return ptr;
+                }
             }
             else
             {
@@ -339,22 +339,22 @@ void BinaryTree::del(int value, nodeptr& ptr)
     else if ((ptr->left == NULL) && (ptr->right == NULL)) // если это лист
     {
         tmp = ptr;
-        free(tmp);
         ptr = NULL;
+        free(tmp);   
         cout << "Ёлемент удален\n" << endl;
     }
     else if (ptr->left == NULL)
     {
         tmp = ptr;
-        free(tmp);
         ptr = ptr->right; // вставл€ем правый вместо удалЄнного
+        free(tmp);    
         cout << "Ёлемент удален\n" << endl;
     }
     else if (ptr->right == NULL)
     {
         tmp = ptr;
-        free(tmp);
         ptr = ptr->left; // вставл€ем левый
+        free(tmp);      
         cout << "Ёлемент удален\n" << endl;
     }
     else
@@ -379,32 +379,47 @@ int BinaryTree::deletemin(nodeptr& ptr)
     return tmpElem;
 }
 
-void BinaryTree::preorder(nodeptr ptr)
+void BinaryTree::preorder(nodeptr ptr, const bool showZeros = false)
 {
     if (ptr != NULL)
     {
-        cout << ptr->element << "\t";
+        cout << "(" << ptr->element << ") ";
 
         if (ptr->leftTag)
-            preorder(ptr->left);
+            preorder(ptr->left, showZeros);
+
+        if (showZeros)
+            cout << ptr->element << " ";
 
         if (ptr->rightTag)
-            preorder(ptr->right);
+            preorder(ptr->right, showZeros);
+    
+        if (showZeros)
+            cout << ptr->element << " ";
     }
+    else if (showZeros)
+        cout << "0 ";
 }
 
-void BinaryTree::inorder(nodeptr ptr)
+void BinaryTree::inorder(nodeptr ptr, const bool showZeros = false)
 {
     if (ptr != NULL)
     {
-        if(ptr->leftTag)
-            inorder(ptr->left);
+        if (showZeros)
+            cout << ptr->element << " ";
 
-        cout << ptr->element << "\t";
+        if(ptr->leftTag)
+            inorder(ptr->left, showZeros);
+
+        cout << "(" << ptr->element << ") ";
 
         if(ptr->rightTag)
-            inorder(ptr->right);
-    }
+            inorder(ptr->right, showZeros);
+
+        if (showZeros)
+            cout << ptr->element << " ";
+    }else if(showZeros)
+        cout << "0 ";
 }
 
 nodeptr BinaryTree::getMostLeftChild(nodeptr ptr)
@@ -419,18 +434,26 @@ nodeptr BinaryTree::getMostLeftChild(nodeptr ptr)
     return current;
 }
 
-void BinaryTree::postorder(nodeptr ptr)
+void BinaryTree::postorder(nodeptr ptr, const bool showZeros = false)
 {
     if (ptr != NULL)
     {
+        if(showZeros)
+            cout << ptr->element << " ";
+
         if (ptr->leftTag)
-            postorder(ptr->left);
+            postorder(ptr->left, showZeros);
+
+        if (showZeros)
+            cout << ptr->element << " ";
 
         if (ptr->rightTag)
-            postorder(ptr->right);
+            postorder(ptr->right, showZeros);
 
-        cout << ptr->element << "\t";
+        cout << "(" << ptr->element << ") ";
     }
+    else if (showZeros)
+        cout << "0 ";
 }
 
 int BinaryTree::max(int value1, int value2)

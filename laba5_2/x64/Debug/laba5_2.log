@@ -1,6 +1,5 @@
-﻿  SewnBinaryTree.cpp
-C:\Users\Илья\source\repos\laba5_2\laba5_2\SewnBinaryTree.cpp(41,82): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-C:\Users\Илья\source\repos\laba5_2\laba5_2\SewnBinaryTree.cpp(47,80): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-C:\Users\Илья\source\repos\laba5_2\laba5_2\SewnBinaryTree.cpp(55,46): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-C:\Users\Илья\source\repos\laba5_2\laba5_2\SewnBinaryTree.cpp(55,46): warning C4267: инициализация: преобразование из "size_t" в "const int"; возможна потеря данных
+﻿  BinaryTree.cpp
+C:\Users\Илья\source\repos\laba5_2\laba5_2\BinaryTree.cpp(32,46): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Илья\source\repos\laba5_2\laba5_2\BinaryTree.cpp(32,46): warning C4267: инициализация: преобразование из "size_t" в "const int"; возможна потеря данных
+C:\Users\Илья\source\repos\laba5_2\laba5_2\BinaryTree.cpp(321): warning C4715: BinaryTree::find: значение возвращается не при всех путях выполнения
   laba5_2.vcxproj -> C:\Users\Илья\source\repos\laba5_2\x64\Debug\laba5_2.exe

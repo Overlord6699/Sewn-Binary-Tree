@@ -4,8 +4,6 @@
 #include "BinaryTree.h"
 #include "SewnBinaryTree.h"
 
-//сим сим
-//удаление работает только с сим
 
 void printInfo1() 
 {
@@ -28,9 +26,9 @@ void printInfo2()
     cout << "3 Сменить дерево" << endl;
     cout << "4 Удаление элемента" << endl;
     cout << "5 Поиск по значению" << endl;
-    cout << "6 Cимметричный обход" << endl;
-    cout << "7 Обратный обход" << endl;
-    cout << "8 Прямой обход" << endl;
+    cout << "6 Cимметричный обход прошитого дерева" << endl;
+    cout << "7 Обратный обход прошитого дерева" << endl;
+    cout << "8 Прямой обход прошитого дерева" << endl;
     cout << "9 Визуализировать дерево" << endl;
     cout << "10 Прошить дерево" << endl;
     cout << "\nВыберите нужное действие и нажмите Enter: ";
@@ -112,7 +110,15 @@ int retrieveChoice(const int minValue, const int maxValue)
     return choice;
 }
 
-void processChoice(BinaryTree& myBinaryTree, SewnBinaryTree& mySewnTree, int& choice, bool isSewnTree = false)
+//для лабы
+int askAboutShowZeros()
+{
+    cout << "\nПоказывать 0 при обходе дерева?\n1- да\n0- нет:";
+
+    return retrieveChoice(0, 1);
+}
+
+void processChoice(BinaryTree& myBinaryTree, SewnBinaryTree& mySewnTree, int& choice, bool isSewnTree = false, bool showZeros = false)
 {
     int tmpElem, findElem, delElem;
     nodeptr minElem = NULL, maxElem = NULL, prevPtr = NULL;
@@ -173,44 +179,30 @@ void processChoice(BinaryTree& myBinaryTree, SewnBinaryTree& mySewnTree, int& ch
             }
             else {
                 if (mySewnTree.root != NULL)
-                {
-                    if(!mySewnTree.find(findElem, mySewnTree.root))
-                        cout << "\nЭлемент не был найден!";
-                }
+                    if (!mySewnTree.find(findElem, mySewnTree.root))
+                        cout << "\nТакого элемента не существует!";
             }
             break;
         case 6:
             if (!isSewnTree)
             {
                 cout << "\nСимметричный обход:\n";
-                myBinaryTree.inorder(myBinaryTree.root);
+                myBinaryTree.inorder(myBinaryTree.root, showZeros);
             }
             else {
-                if (mySewnTree.isSewn) {
-                    cout << "\nСимметричный обход с прошивкой:\n";
-                    mySewnTree.inorder(mySewnTree.root);
-                }
-                else {
-                    cout << "\nСимметричный обход:\n";
-                    mySewnTree.inorder(mySewnTree.root);
-                }
+                cout << "\nСимметричный обход прошитого дерева:\n";
+                mySewnTree.inorder(mySewnTree.root, showZeros);
             }
             break;
         case 7:
             if (!isSewnTree)
             {
                 cout << "\nОбратный обход:\n";
-                myBinaryTree.postorder(myBinaryTree.root);
+                myBinaryTree.postorder(myBinaryTree.root, showZeros);
             }
             else {
-                if (mySewnTree.isSewn) {
-                    cout << "\nОбратный обход c прошивкой:\n";
-                    mySewnTree.postorder(mySewnTree.root);
-                }
-                else {
-                    cout << "\nОбратный обход:\n";
-                    mySewnTree.postorder(mySewnTree.root);
-                }
+                cout << "\nОбратный обход прошитого дерева:\n";
+                mySewnTree.postorder(mySewnTree.root, showZeros);
             }
 
             break;
@@ -218,17 +210,11 @@ void processChoice(BinaryTree& myBinaryTree, SewnBinaryTree& mySewnTree, int& ch
             if (!isSewnTree)
             {
                 cout << "\nПрямой обход:\n";
-                myBinaryTree.preorder(myBinaryTree.root);
+                myBinaryTree.preorder(myBinaryTree.root, showZeros);
             }
             else {
-                if (mySewnTree.isSewn) {
-                    cout << "\nПрямой обход c прошивкой:\n";
-                    mySewnTree.preorder(mySewnTree.root);
-                }
-                else {
-                    cout << "\nПрямой обход:\n";
-                    mySewnTree.preorder(mySewnTree.root);
-                }
+                cout << "\nПрямой обход прошитого дерева:\n";
+                mySewnTree.preorder(mySewnTree.root, showZeros);
             }
 
             break;
@@ -257,7 +243,7 @@ void processChoice(BinaryTree& myBinaryTree, SewnBinaryTree& mySewnTree, int& ch
         if (choice != 1) {
             system("pause");
             system("cls");
-            processChoice(myBinaryTree, mySewnTree, choice, isSewnTree);
+            processChoice(myBinaryTree, mySewnTree, choice, isSewnTree, showZeros);
         }
     } while (choice != 1);
 } 
@@ -283,8 +269,10 @@ int main()
     SewnBinaryTree mySewnTree = SewnBinaryTree(myBinaryTree2);
     myBinaryTree2.~BinaryTree();
 
-    int choice = 0;
-    processChoice(myBinaryTree, mySewnTree, choice);
+    int choice = 0, showZeros = askAboutShowZeros();
+
+    system("cls");
+    processChoice(myBinaryTree, mySewnTree, choice, false, showZeros);
     system("cls");
 
     myBinaryTree.~BinaryTree();
